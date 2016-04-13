@@ -9,7 +9,7 @@
 			<th>hd</th>
 			<th>rtmp_name</th>
 			<th>Enabled</th>
-			<th>Running</th>
+<!--			<th>Running</th> -->
 			<th>&nbsp;</th>
 			<th>&nbsp;</th>
 		</tr>
@@ -25,14 +25,14 @@
 			<td>{{$channel->hd}}</td>
 			<td>{{$channel->rtmp_name}}</td>
 			<td>{{$channel->enabled}}</td>
-			<td>{{$channel->running}}</td>
+<!--			<td>{{$channel->running}}</td> -->
 			<td>
 				<a href="{{route('channel.edit',$channel)}}">Edit</a>
 			</td>
 			<td>@include('channel.partials.delete')</td>
 		</tr>
 		<tr>
-			<td colspan="11">Source : {{$channel->source}}</td>
+			<td colspan="10">Source : {{$channel->source}}</td>
 		</tr>
 		@endforeach
 	</tbody>

@@ -58,7 +58,7 @@
 		</label>
 	</div>
 </div>
-<div class="form-group">
+<!-- <div class="form-group">
 	<div class="checkbox">
 		<label>
 			{{ Form::hidden('running', false) }}	
@@ -67,3 +67,4 @@
 		</label>
 	</div>
 </div>
+-->
