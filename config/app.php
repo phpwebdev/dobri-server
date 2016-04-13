@@ -39,7 +39,7 @@ return [
     |
      */
 
-    'url'             => env('APP_URL', 'http://dobri-server.loc/'),
+    'url'             => env('APP_URL', 'http://dobri-server.loc/' ),
 
     /*
     |--------------------------------------------------------------------------
