@@ -24,9 +24,9 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Server::class, function (Faker\Generator $faker) {
     return [
-        'server_name'=>$faker->sentence(3, true), 
+        'server_name'=>$faker->sentence(3, true),
         'server_ip'=>$faker->ipv4,
-        'server_port'=>$faker->numberBetween(1,65535),
+        'server_port'=>$faker->numberBetween(1, 65535),
         'nvenc_h264'=>$faker->boolean(),
         'nvenc_hevc'=>$faker->boolean(),
         'x264'=>$faker->boolean(),
@@ -41,7 +41,7 @@ $factory->define(App\Channel::class, function (Faker\Generator $faker) {
         'channel_name' => $faker->sentence(2, true),
         'server_id'=>App\Server::all()->random()->id,
         'source' => $faker->text(200),
-        'audio_output' => $faker->numberBetween(0,255),
+        'audio_output' => $faker->numberBetween(0, 255),
         'nvenc_h264' => $faker->boolean(),
         "x264" => $faker->boolean(),
         "hd"=> $faker->boolean(),
@@ -51,4 +51,12 @@ $factory->define(App\Channel::class, function (Faker\Generator $faker) {
 });
 
 
- 
+
+$factory->define(App\Search::class, function (Faker\Generator $faker) {
+    return [
+        'first_name'=>$faker->firstName($gender = null|'male'|'female'),
+        'last_name'=>$faker->lastName(),
+        'email'=>$faker->email(),
+        'bio'=>$faker->paragraph(10,true)
+    ];
+});

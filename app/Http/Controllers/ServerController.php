@@ -1,112 +1,144 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateServerRequest;
-use App\Http\Requests\EditServerRequest;
-use App\Http\Requests\Request;
 use App\Server;
-use Illuminate\Support\Facades\Session;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Input;
+use App\Http\Requests\EditServerRequest;
+use App\Http\Requests\CreateServerRequest;
+
+
 
 class ServerController extends Controller
 {
-/**
- * Create a new controller instance.
- *
- * @return void
- */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-/**
- * Display a listing of the resource.
- *
- * @return \Illuminate\Http\Response
- */
+
+    
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
     public function index()
-    {
-        $servers = Server::paginate();
-        return view('server.index', compact('servers'));
+    {	
+	
+        $query = Input::get('query','');
+        $sort = Input::get('sort');
+        $query_fulltext_search = '*'.$query.'*';
+        $_ = Server::select();
+        if (isset($query)){
+            $_ = $_->search([$query_fulltext_search], ['id'=>1,'server_name' =>15,'server_ip' => 5, 'server_port' => 5], true);
+        }
+        if (isset($sort)){
+            $_ = $_->sortable([$sort]);
+        }
+        $_ = $_->orderBy('id', 'desc');
+        $servers = $_->paginate(10);
+        return view('servers.index', compact('servers','query'));
     }
-/**
- * Show the form for creating a new resource.
- *
- * @return \Illuminate\Http\Response
- */
+
+    public function fullsearch()
+    {   
+
+        $query = Input::get('query');
+        $sort = Input::get('sort');
+        $query_fulltext_search = '*'.$query.'*';
+        $_ = Server::select();
+        if (isset($query)){
+            $_ = $_->search([$query_fulltext_search], ['id'=>1,'server_name' =>15,'server_ip' => 5, 'server_port' => 5], true);
+        }
+        if (isset($sort)){
+            $_ = $_->sortable([$sort]);
+        }
+        $_ = $_->orderBy('id', 'desc');
+        $servers = $_->paginate(10);
+        return view('servers.index', compact('servers','query'));
+    }
+
+
+
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return Response
+     */
     public function create()
     {
-        return view('server.create');
+        return view('servers.create',compact('search'));
     }
-/**
- * Store a newly created resource in storage.
- *
- * @param  \Illuminate\Http\Request  $request
- * @return \Illuminate\Http\Response
- */
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param Request $request
+     * @return Response
+     */
     public function store(CreateServerRequest $request)
     {
-        $server = new Server($request->all());
-        $server->save();
-        Session::flash('message', 'Server was created!');
-        return redirect()->route('server.index');
+
+        $search = new Search($request->all());
+        $search->save();
+
+        return redirect()->route('servers.index')->with('message', 'Item created successfully.');
     }
-/**
- * Display the specified resource.
- *
- * @param  int  $id
- * @return \Illuminate\Http\Response
- */
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return Response
+     */
     public function show($id)
     {
-//
+        $search = Server::findOrFail($id);
+
+        return view('servers.show', compact('search'));
     }
-/**
- * Show the form for editing the specified resource.
- *
- * @param  int  $id
- * @return \Illuminate\Http\Response
- */
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return Response
+     */
     public function edit($id)
     {
-        $server = Server::findOrFail($id);
-        return view('server.edit', compact('server'));
+        $search = Server::findOrFail($id);
+
+        return view('servers.edit', compact('search'));
     }
-/**
- * Update the specified resource in storage.
- *
- * @param  \Illuminate\Http\Request  $request
- * @param  int  $id
- * @return \Illuminate\Http\Response
- */
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  int  $id
+     * @param Request $request
+     * @return Response
+     */
     public function update(EditServerRequest $request, $id)
     {
 
-      //  $_ = $request->all();
+        $search = Server::findOrFail($id);
+        $search->fill($request->all());  
 
-       /* $_["x264"]       = isset($_["x264"]) ? $_["x264"] : false;
-        $_["nvenc_h264"] = isset($_["nvenc_h264"]) ? $_["nvenc_h264"] : false;
-        $_["nvenc_hevc"] = isset($_["nvenc_hevc"]) ? $_["nvenc_hevc"] : false;
-        $_["x265"]       = isset($_["x265"]) ? $_["x265"] : false;
-        $_["enabled"]    = isset($_["enabled"]) ? $_["enabled"] : false;
-        */
-        $server = Server::findOrFail($id);
-        //$server->fill($_);
-        $server->fill($request->all());
-        $server->save();
-        Session::flash('message', 'Server was updated!');
-        return redirect()->route('server.index');
+        $search->save();
+        return redirect()->route('servers.index')->with('message', 'Item updated successfully.');
     }
-/**
- * Remove the specified resource from storage.
- *
- * @param  int  $id
- * @return \Illuminate\Http\Response
- */
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
     public function destroy($id)
     {
-        $server = Server::findOrFail($id);
-        Server::destroy($id);
-        Session::flash('message', "Server \"" . $server->server_name . "\" was destroyed!");
-        return redirect()->route('server.index');
+        $search = Server::findOrFail($id);
+        $search->delete();
+
+        return redirect()->route('servers.index')->with('message', 'Item deleted successfully.');
     }
 }

@@ -11,15 +11,11 @@
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
 });
 
 
-Route::get('/home', 'HomeController@index');
-
-Route::auth();
-
-Route::resource('/server', 'ServerController');
-Route::resource('/channel', 'ChannelController');
-Route::resource('/servers.channels', 'ServerChannelsController',['except'=>['edit','create']]);
+Route::get('servers/fullsearch/', 'ServerController@fullsearch');
+Route::resource("servers","ServerController");

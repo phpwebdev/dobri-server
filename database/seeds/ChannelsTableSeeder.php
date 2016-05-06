@@ -11,6 +11,6 @@ class ChannelsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Channel::class, 150)->create();
+        factory(App\Channel::class, 1500)->create();
     }
 }

@@ -13,7 +13,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-
         DB::statement('SET foreign_key_checks = 0;');
         Server::truncate();
         Channel::truncate();
