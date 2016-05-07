@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace app\Http\Requests;
 
 use App\Http\Requests\Request;
-use App\Models\Servers;
 
-class CreateServersRequest extends Request
+class EditServerRequest extends Request
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -25,6 +23,10 @@ class CreateServersRequest extends Request
      */
     public function rules()
     {
-        return Servers::$rules;
+        return [
+            'server_name' => 'required|unique:servers,server_name,'.$this->id.',id|max:255',
+            'server_ip' =>'required|ip',
+            'server_port' =>'required|integer|between:0,65355'
+        ];
     }
 }

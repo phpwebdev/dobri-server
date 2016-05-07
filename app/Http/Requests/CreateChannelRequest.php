@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace app\Http\Requests;
 
 use App\Http\Requests\Request;
-use App\Models\Servers;
 
-class UpdateServersRequest extends Request
+class CreateChannelRequest extends Request
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -25,6 +23,12 @@ class UpdateServersRequest extends Request
      */
     public function rules()
     {
-        return Servers::$rules;
+        return [
+            'channel_name' => 'required|unique:channels,channel_name|max:255',
+            'server_id'    => 'required',
+            'source'       => 'required',
+            'rtmp_name'    => 'required',
+            'audio_output' => 'required|numeric',
+        ];
     }
 }

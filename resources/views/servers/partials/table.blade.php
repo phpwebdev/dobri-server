@@ -6,6 +6,9 @@
 			<th nowrap>@sortablelink ('server_name','Server name')</th>
 			<th nowrap>@sortablelink ('server_ip','Server IP')</th>
 			<th nowrap>@sortablelink ('server_port','Server port')</th>			
+			<th class="text-right" colspan=3 align="right">				
+				<a class="btn btn-success pull-right btn-sm" href="{{ route('servers.create') }}"><i class="glyphicon glyphicon-plus"></i> Create</a>				
+			</th>	
 		</tr>
 	</thead>
 	@if($servers->count())

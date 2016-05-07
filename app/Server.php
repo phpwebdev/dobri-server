@@ -11,12 +11,13 @@ class Server extends Model
    use Eloquence,Sortable;
 
     protected $table    = "servers";
+    protected $primaryKey    = "id";
+
     public $timestamps = true;
     protected $fillable = array('server_name', 'server_ip', 'server_port', 'nvenc_h264', 'nvenc_hevc', 'x264', 'x265', 'enabled');
     protected $hidden   = ['id','created_at','updatet_at'];
 
     protected $guarded = [];
-
 
     protected $searchable = [
         'columns' => [
@@ -33,7 +34,7 @@ class Server extends Model
             'server_port'     
         ];
 
-    public function Channel()
+    public function channels()
     {
         return $this->hasMany('App\Channel');
     }

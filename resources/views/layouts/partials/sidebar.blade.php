@@ -29,14 +29,15 @@
         </form>
         <!-- /.search form -->
 
-    
+  
+
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu">
             <li class="header">HEADER</li>
             <!-- Optionally, you can add icons to the links -->
             <li class="{!!Route::getCurrentRoute()->getPath()=='home'?'active':''!!}"><a href="{{ url('home') }}"><i class='fa fa-link'></i> <span>Home</span></a></li>
-            <li  class="{!!Route::getCurrentRoute()->getPath()=='servers'?'active':''!!}"><a href="{{ url('servers') }}"><i class='fa fa-link'></i> <span>Servers</span></a></li>
-            <li  class="{!!Route::getCurrentRoute()->getPath()=='channels'?'active':''!!}"><a href="{{ url('channels') }}"><i class='fa fa-link'></i> <span>Channels</span></a></li>
+            <li  class="{!!Request::segment(1)=='servers'?'active':''!!}"><a href="{{ url('servers') }}"><i class='fa fa-link'></i> <span>Servers</span></a></li>
+            <li  class="{!!Request::segment(1)=='channels'?'active':''!!}"><a href="{{ url('channels') }}"><i class='fa fa-link'></i> <span>Channels</span></a></li>
 
             <!--li class="treeview">
                 <a href="#"><i class='fa fa-link'></i> <span>Multilevel</span> <i class="fa fa-angle-left pull-right"></i></a>

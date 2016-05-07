@@ -19,3 +19,4 @@ Route::get('/', function () {
 
 Route::get('servers/fullsearch/', 'ServerController@fullsearch');
 Route::resource("servers","ServerController");
+Route::resource("channels","ChannelController");

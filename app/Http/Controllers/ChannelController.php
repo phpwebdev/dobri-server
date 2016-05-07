@@ -4,22 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Server;
 use App\Channel;
+use App\Http\Requests;
 use Laracasts\Flash\Flash;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Route;
-use App\Http\Requests\EditServerRequest;
-use App\Http\Requests\CreateServerRequest;
+use App\Http\Requests\EditChannelRequest;
+use App\Http\Requests\CreateChannelRequest;
 
-class ServerController extends Controller
+class ChannelController extends Controller
 {
 
     public function __construct()
     {
-        
-     
-            
+
         $this->middleware('auth');
     }
 
@@ -30,19 +27,19 @@ class ServerController extends Controller
      */
     public function index()
     {
-        $query = Input::get('query');
+        $query = Input::get('query', '');
         $sort = Input::get('sort');
         $query_fulltext_search = '*'.$query.'*';
-        $_ = Server::select();
+        $_ = Channel::select();
         if (isset($query)) {
-            $_ = $_->search([$query_fulltext_search], ['id'=>1, 'server_name' =>15, 'server_ip' => 5, 'server_port' => 5], true);
+            $_ = $_->search([$query_fulltext_search], ['id'=>1, 'channel_name' =>15, 'source' => 5, 'rtmp_name' => 5], true);
         }
         if (isset($sort)) {
             $_ = $_->sortable([$sort]);
         }
         $_ = $_->orderBy('id', 'desc');
-        $servers = $_->paginate(10);
-        return view('servers.index', compact('servers', 'query'));
+        $channels = $_->paginate(10);
+        return view('channels.index', compact('channels', 'query'));
     }
 
     public function fullsearch()
@@ -58,8 +55,8 @@ class ServerController extends Controller
         //     $_ = $_->sortable([$sort]);
         // }
         // $_ = $_->orderBy('id', 'desc');
-        // $servers = $_->paginate(10);
-        // return view('servers.index', compact('servers', 'query'));
+        // $channels = $_->paginate(10);
+        // return view('channels.index', compact('channels', 'query'));
         $this->index();
     }
 
@@ -73,7 +70,7 @@ class ServerController extends Controller
      */
     public function create()
     {
-        return view('servers.create', compact('search'));
+        return view('channels.create');
     }
 
     /**
@@ -82,15 +79,15 @@ class ServerController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function store(CreateServerRequest $request)
+    public function store(CreateChannelRequest $request)
     {
-        $server = new Server($request->all());        
-        if ($server->save()) {
+        $channel = new Channel($request->all());        
+        if ($channel->save()) {
             Flash::success('Server created successfully.');
         } else {
             Flash::error("Server can't cant be created ") ;
         }
-        return redirect()->route('servers.index');
+        return redirect()->route('channels.index');
     }
 
     /**
@@ -101,18 +98,11 @@ class ServerController extends Controller
      */
     public function show($id)
     {
-        
-        //$server = Server::with(['channels'])->orderBy('created_at','desc')->findOrFail($id);
-
-        $server =Server::with(['channels' => function ($query) {
-            $sort = Input::get('sort','id');
-            $order = Input::get('order','desc');
-            if (isset($sort) && isset($order) ) {
-                $query->orderBy($sort,$order);
-            }         
-        }])->findOrFail($id);
-        return view('servers.show', compact('server'));
-
+        $channel = Channel::find($id)
+            ->with(['server'])
+            ->first();
+        //dd($channel->channels);
+        return view('channels.show', compact('channel'));
     }
 
     /**
@@ -123,9 +113,9 @@ class ServerController extends Controller
      */
     public function edit($id)
     {
-        $server = Server::findOrFail($id);
+        $channel = Channel::findOrFail($id);
 
-        return view('servers.edit', compact('server'));
+        return view('channels.edit', compact('channel'));
     }
 
     /**
@@ -135,17 +125,17 @@ class ServerController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function update(EditServerRequest $request, $id)
+    public function update(EditChannelRequest $request, $id)
     {
-        $server = Server::findOrFail($id);
-        $server->fill($request->all());
-        if ($server->save()) {
-            Flash::success('Server updated successfully.');
+        $channel = Channel::findOrFail($id);
+        $channel->fill($request->all());
+        if ($channel->save()) {
+            Flash::success('Channel updated successfully.');
         } else {
-            Flash::error("Server can't cant be updated.") ;
+            Flash::error("Channel can't cant be updated.") ;
         }
         
-        return redirect()->route('servers.index');
+        return redirect()->route('channels.index');
     }
 
     /**
@@ -156,13 +146,13 @@ class ServerController extends Controller
      */
     public function destroy($id)
     {
-        $server = Server::findOrFail($id);
-        if ($server->delete()) {
-            Flash::success('Server deleted successfully.');
+        $channel = Channel::findOrFail($id);
+        if ($channel->delete()) {
+            Flash::success('Channel deleted successfully.');
         } else {
-            Flash::error("Server can't cant be deleted ") ;
+            Flash::error("Channel can't cant be deleted ") ;
         }
 
-        return redirect()->route('servers.index');
+        return redirect()->route('channels.index');
     }
 }
