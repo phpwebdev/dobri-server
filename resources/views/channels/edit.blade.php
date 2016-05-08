@@ -1,33 +1,27 @@
-@extends('layout')
+@extends('layouts.app')
 @section('css')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker.css" rel="stylesheet">
 @endsection
-@section('header')
-
-<div class="page-header">
-  <div class="pull-left">
-    <h1><i class="glyphicon glyphicon-edit"></i> Searches / Edit #{{$search->id}}</h1>
-  </div>
-  <div class="pull-right">
-      
-  </div>
-  <div class="clearfix"></div>
-</div>
-
-@endsection
-@section('content')
-
+@section('main-content')
 <div class="row">
-  <div class="col-md-12">
-    
-      {{Form::open(['route'=>['searches.update',$search->id],'method'=>'PUT'])}}
-      @include('searches.partials.fields')
-      <div class="well well-sm">
-        <button type="submit" class="btn btn-primary">Save</button>
-        <a class="btn btn-link pull-right" href="{{ route('searches.index') }}"><i class="glyphicon glyphicon-backward"></i>  Back</a>
+  <div class="col-xs-12">
+    <div class="box">
+      <div class="box-header">
+        <h3 class="box-title">Channel / Edit #{{$channel->id}}</h3>
       </div>
-    </form>
+      <div class="box-body table-responsive">
+        
+        {{Form::open(['route'=>['channels.update',$channel->id],'method'=>'PUT'])}}
+        @include('channels.partials.fields')
+        <div class="well well-sm">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <a class="btn btn-link pull-right" href="{{ route('channels.index') }}"><i class="glyphicon glyphicon-backward"></i> Back</a>
+        </div>
+      </form>
+    </div>
+    
   </div>
+</div>
 </div>
 @endsection
 @section('scripts')

@@ -3,7 +3,6 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker.css" rel="stylesheet">
 @endsection
 @section('main-content')
-
 <div class="row">
   <div class="col-xs-12">
     <div class="box">
@@ -12,20 +11,17 @@
       </div>
       <div class="box-body table-responsive">
         
-    {{Form::open(['route'=>['servers.update',$server->id],'method'=>'PUT'])}}
-      @include('servers.partials.fields')
-      <div class="well well-sm">
-        <button type="submit" class="btn btn-primary">Save</button>
-        <a class="btn btn-link pull-right" href="{{ route('servers.index') }}"><i class="glyphicon glyphicon-backward"></i> Back</a>
-      </div>
-    </form>
-
-
-
-      </div>
-      
+        {{Form::open(['route'=>['servers.update',$server->id],'method'=>'PUT'])}}
+        @include('servers.partials.fields')
+        <div class="well well-sm">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <a class="btn btn-link pull-right" href="{{ route('servers.index') }}"><i class="glyphicon glyphicon-backward"></i> Back</a>
+        </div>
+      </form>
     </div>
+    
   </div>
+</div>
 </div>
 @endsection
 @section('scripts')

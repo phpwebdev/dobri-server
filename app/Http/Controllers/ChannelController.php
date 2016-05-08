@@ -70,7 +70,9 @@ class ChannelController extends Controller
      */
     public function create()
     {
-        return view('channels.create');
+        
+        $servers= Server::lists('server_name','id');
+        return view('channels.create',compact('servers'));
     }
 
     /**
@@ -98,10 +100,7 @@ class ChannelController extends Controller
      */
     public function show($id)
     {
-        $channel = Channel::find($id)
-            ->with(['server'])
-            ->first();
-        //dd($channel->channels);
+        $channel = Channel::find($id);                
         return view('channels.show', compact('channel'));
     }
 
@@ -113,9 +112,9 @@ class ChannelController extends Controller
      */
     public function edit($id)
     {
+        $servers= Server::lists('server_name','id');
         $channel = Channel::findOrFail($id);
-
-        return view('channels.edit', compact('channel'));
+        return view('channels.edit', compact('channel','servers'));
     }
 
     /**

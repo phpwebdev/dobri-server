@@ -1,35 +1,27 @@
-@extends('layout')
+@extends('layouts.app')
 @section('css')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker.css" rel="stylesheet">
 @endsection
-@section('header')
-
-<div class="page-header">
-  <div class="pull-left">
-		<h1><i class="glyphicon glyphicon-plus"></i> Searches / Create </h1>
-  </div>
-  <div class="pull-right">
-  		
-  </div>
-  <div class="clearfix"></div>
-</div>
-
-
-
-
-@endsection
-@section('content')
-
+@section('main-content')
 <div class="row">
-	<div class="col-md-12">			  		
-			{{Form::open(['route'=>['searches.store'],'method'=>'POST'])}}
-			@include('searches.partials.fields')
-			<div class="well well-sm">
-				<button type="submit" class="btn btn-primary">Create</button>
-				<a class="btn btn-link pull-right" href="{{ route('searches.index') }}"><i class="glyphicon glyphicon-backward"></i> Back</a>
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">Channel / Create</h3>
 			</div>
-		{{Form::close()}}
+			<div class="box-body table-responsive">
+				
+				{{Form::open(['route'=>['channels.store'],'method'=>'POST'])}}
+				@include('channels.partials.fields')
+				<div class="well well-sm">
+					<button type="submit" class="btn btn-primary">Save</button>
+					<a class="btn btn-link pull-right" href="{{ route('channels.index') }}"><i class="glyphicon glyphicon-backward"></i> Back</a>
+				</div>
+			</form>
+		</div>
+		
 	</div>
+</div>
 </div>
 @endsection
 @section('scripts')
