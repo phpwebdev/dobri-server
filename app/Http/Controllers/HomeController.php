@@ -7,6 +7,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Home;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 
@@ -14,6 +15,8 @@ use Illuminate\Http\Request;
  * Class HomeController
  * @package App\Http\Controllers
  */
+
+
 class HomeController extends Controller
 {
     /**
@@ -21,6 +24,8 @@ class HomeController extends Controller
      *
      * @return void
      */
+    public $info ;
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -33,6 +38,24 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+
+        $info = (object)array();
+        $info->usersCount = 2;
+        $info->usersActivePercent= 100; 
+        $info->usersActive = 2;
+
+        $info->serversCount = Home::getServersCount();
+        $info->serversActivePercent = Home::getServersActivePercent(); 
+        $info->serversActiveCount = Home::getServersActiveCount();
+
+        $info->channelsCount =Home::getChannelsCount();;
+        $info->channelsActivePercent= Home::getChannelsActivePercent();  
+        $info->channelsActive = Home::getChannelsActiveCount();
+        
+        return view('home',compact('info'));
     }
+
+    
 }
+
+

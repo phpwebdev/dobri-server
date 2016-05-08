@@ -25,7 +25,7 @@
     <div class="login-box-body">
     <p class="login-box-msg">Sign in to start your session</p>
     <form action="{{ url('/login') }}" method="post">
-        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        {!!csrf_field()!!}
         <div class="form-group has-feedback">
             <input type="email" class="form-control" placeholder="Email" name="email"/>
             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
@@ -48,7 +48,7 @@
         </div>
     </form>
 
-    @include('auth.partials.social_login')
+    {{--@include('auth.partials.social_login')--}}
 
     <a href="{{ url('/password/reset') }}">I forgot my password</a><br>
     <a href="{{ url('/register') }}" class="text-center">Register a new membership</a>

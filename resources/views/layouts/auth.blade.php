@@ -5,4 +5,7 @@
 
 @yield('content')
 
+@section('scripts')
+    @include('layouts.partials.scripts_auth')
+@show
 </html>

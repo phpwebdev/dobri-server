@@ -39,6 +39,8 @@
             <li  class="{!!Request::segment(1)=='servers'?'active':''!!}"><a href="{{ url('servers') }}"><i class='fa fa-link'></i> <span>Servers</span></a></li>
             <li  class="{!!Request::segment(1)=='channels'?'active':''!!}"><a href="{{ url('channels') }}"><i class='fa fa-link'></i> <span>Channels</span></a></li>
 
+            <li  class="{!!Request::segment(1)=='users'?'active':''!!}"><a href="{{ url('users') }}"><i class='fa fa-link'></i> <span>Users</span></a></li>
+
             <!--li class="treeview">
                 <a href="#"><i class='fa fa-link'></i> <span>Multilevel</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">

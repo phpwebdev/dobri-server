@@ -12,11 +12,10 @@
 */
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@index');
 
 
 
 Route::resource("servers","ServerController");
 Route::resource("channels","ChannelController");
+Route::resource("users","UserController");

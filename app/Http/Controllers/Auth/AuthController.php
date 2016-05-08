@@ -3,10 +3,18 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use Hash;
 use Validator;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
+
+
+use App\Http\Requests\LoginUserRequest;
+use App\Http\Requests\RegisterUserRequest;
 
 class AuthController extends Controller
 {
@@ -29,6 +37,9 @@ class AuthController extends Controller
      * @var string
      */
     protected $redirectTo = '/home';
+    protected $loginPath = '/login';
+    protected $redirectAfterLogout = '/login';
+
 
     /**
      * Create a new authentication controller instance.
@@ -45,7 +56,7 @@ class AuthController extends Controller
      *
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
-     */
+
     protected function validator(array $data)
     {
         return Validator::make($data, [
@@ -54,19 +65,68 @@ class AuthController extends Controller
             'password' => 'required|confirmed|min:6',
         ]);
     }
-
+    */
+    
     /**
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
      * @return User
      */
-    protected function create(array $data)
+    protected function register(RegisterUserRequest $request)
     {
-        return User::create([
+        $data = $request;
+
+        $created =  User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password']),
+            'enabled'=>!$this->checkForEmptyTable(),
+            'password' => Hash::make($data['password']),
         ]);
+        
+        if ($created){
+           return redirect($this->loginPath);
+        }else{
+            return redirect($this->loginPath)->withErrors([
+                'error' => 'Can\'t create user'
+            ]);  
+        }
+    }
+
+
+
+    protected function checkForEmptyTable()
+    {
+        return User::count();
+    }
+
+
+    public function login(LoginUserRequest $request)
+    {   
+
+        $user = User::whereEmail($request->email)->first();
+        
+        if (!$user->enabled){
+            return redirect($this->loginPath)           
+                ->withErrors([
+               'error' => 'Your account are not activated'
+            ]);    
+        }else{      
+            $logged = Auth::attempt(
+                [
+                    'email' => $request->email, 
+                    'password' => $request->password,                 
+                ]
+            );
+
+            if ($logged) {            
+                return redirect()->intended($this->redirectTo);            
+            } else {                
+                return redirect($this->loginPath)           
+                    ->withErrors([
+                   'error' => 'These credentials do not match our records'
+                ]);
+            } 
+        }
     }
 }

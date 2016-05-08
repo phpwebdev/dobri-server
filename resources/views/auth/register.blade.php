@@ -26,7 +26,7 @@
         <div class="register-box-body">
             <p class="login-box-msg">Register a new membership</p>
             <form action="{{ url('/register') }}" method="post">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                {!!csrf_field()!!}
                 <div class="form-group has-feedback">
                     <input type="text" class="form-control" placeholder="Full name" name="name" value="{{ old('name') }}"/>
                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
@@ -47,7 +47,7 @@
                     <div class="col-xs-8">
                         <div class="checkbox icheck">
                             <label>
-                                <input type="checkbox"> I agree to the <a href="#">terms</a>
+                                <input type="checkbox" name="terms"> I agree to the <a href="#">terms</a>
                             </label>
                         </div>
                     </div><!-- /.col -->
@@ -57,13 +57,13 @@
                 </div>
             </form>
 
-            @include('auth.partials.social_login')
+            {{--@include('auth.partials.social_login')--}}
 
             <a href="{{ url('/login') }}" class="text-center">I already have a membership</a>
         </div><!-- /.form-box -->
     </div><!-- /.register-box -->
 
-    @include('layouts.partials.scripts_auth')
+    {{--@include('layouts.partials.scripts_auth')--}}
 
     <script>
         $(function () {
